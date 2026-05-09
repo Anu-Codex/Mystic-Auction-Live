@@ -202,22 +202,46 @@
         socket.on('updateAuction', renderAuction);
         socket.on('newMessage', addChatMessage);
 
+
         function renderPlayers(players) {
-            const list = document.getElementById('playerList');
-            list.innerHTML = players.map(p => `
-                <tr class="hover:bg-white/5 transition border-b border-white/5">
-                    <td class="p-4 font-bold text-white">${p.name}</td>
-                    <td class="p-4 text-gray-400">${p.strength || p.rating}</td>
-                    <td class="p-4"><span class="px-2 py-0.5 rounded-full text-[10px] border border-gray-600 bg-gray-800 text-gray-300">${p.cardType}</span></td>
-                    <td class="p-4"><span class="font-bold ${p.status === 'Available' ? 'text-neon' : 'text-red-500'}">${p.status}</span></td>
-                    <td class="p-4 text-white">${p.baseValue} L</td>
-                    <td class="p-4 text-center">
-                        ${user && user.role === 'admin' && p.status === 'Available' ? `<button onclick="socket.emit('startAuction', { playerId: '${p._id}', baseValue: ${p.baseValue} })" class="bg-neon text-black text-[10px] px-3 py-1 rounded font-bold">START</button>` : `<span class="text-gray-600 text-xs">${p.soldTo || '-'}</span>`}
-                        ${user && user.role === 'admin' ? `<button onclick="socket.emit('deletePlayer', '${p._id}')" class="ml-2 text-gray-500 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>` : ''}
-                    </td>
-                </tr>
-            `).join('');
+    const list = document.getElementById('playerList');
+    list.innerHTML = players.map(p => `
+        <tr class="hover:bg-white/5 transition border-b border-white/5">
+            <td class="p-4 font-bold text-white">${p.name}</td>
+            <td class="p-4 text-gray-400">${p.strength || p.rating}</td>
+            <td class="p-4"><span class="px-2 py-0.5 rounded-full text-[10px] border border-gray-600 bg-gray-800 text-gray-300">${p.cardType}</span></td>
+            <td class="p-4"><span class="font-bold ${p.status === 'Available' ? 'text-neon' : 'text-red-500'}">${p.status}</span></td>
+            <td class="p-4 text-white">${p.baseValue} L</td>
+            
+            <!-- ACTION COLUMN START -->
+            <td class="p-4 text-center">
+                <div class="flex items-center justify-center gap-3">
+                    
+                    <!-- START AUCTION BUTTON (Admin Only) -->
+                    ${user && user.role === 'admin' && p.status === 'Available' ? 
+                        `<button onclick="socket.emit('startAuction', { playerId: '${p._id}', baseValue: ${p.baseValue} })" 
+                                 class="bg-neon text-black text-[10px] px-3 py-1 rounded font-bold uppercase hover:brightness-110">
+                            Start
+                        </button>` : `<span class="text-gray-600 text-xs">${p.soldTo || '-'}</span>`
+                    }
+
+                    <!-- DELETE BUTTON (Admin Only) -->
+                    ${user && user.role === 'admin' ? `
+                        <button onclick="confirmDelete('${p._id}', '${p.name.replace(/'/g, "\\'")}')" 
+                                class="text-gray-500 hover:text-red-500 transition-colors p-1" title="Delete Player">
+                            <i class="fa-solid fa-trash-can text-sm"></i>
+                        </button>
+                    ` : ''}
+
+                </div>
+            </td>
+            <!-- ACTION COLUMN END -->
+
+        </tr>
+    `).join('');
         }
+
+        
 
         function renderTeams(teams) {
             document.getElementById('budgetList').innerHTML = teams.map(t => `
