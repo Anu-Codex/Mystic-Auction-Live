@@ -315,6 +315,12 @@
             box.appendChild(div);
             box.scrollTop = box.scrollHeight;
         }
+        // Add this with your other functions like addPlayer()
+function confirmDelete(id) {
+    if (confirm("⚠️ Are you sure you want to PERMANENTLY delete this player?")) {
+        socket.emit('deletePlayer', id);
+    }
+}
 
         function generatePDF() {
             const { jsPDF } = window.jspdf;
