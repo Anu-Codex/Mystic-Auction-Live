@@ -268,14 +268,33 @@
 
         function bid(inc) { socket.emit('placeBid', { teamName: user.name, increment: inc }); }
         function addPlayer() {
-            const data = {
-                name: document.getElementById('pName').value,
-                strength: document.getElementById('pStrength').value,
-                cardType: document.getElementById('pType').value,
-                baseValue: Number(document.getElementById('pBase').value),
-                status: 'Available'
-            };
-            socket.emit('addPlayer', data);
+    const name = document.getElementById('pName').value.trim();
+    const strength = document.getElementById('pStrength').value;
+    const type = document.getElementById('pType').value;
+    const baseValue = document.getElementById('pBase').value;
+
+    if (!name || !strength || !baseValue) {
+        alert("Please fill all fields!");
+        return;
+    }
+
+    const data = {
+        name: name,
+        strength: Number(strength),   // Ensure this is a number
+        cardType: type,
+        baseValue: Number(baseValue), // Ensure this is a number
+        status: 'Available',
+        soldTo: '-'
+    };
+
+    console.log("Attempting to add player:", data);
+    socket.emit('addPlayer', data);
+
+    // Clear inputs after sending
+    document.getElementById('pName').value = '';
+    document.getElementById('pStrength').value = '';
+    document.getElementById('pBase').value = '';
+    alert("Player addition request sent!");
         }
 
         function sendChat() {
