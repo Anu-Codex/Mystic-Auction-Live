@@ -118,6 +118,19 @@
                 <!-- Right Side -->
                 <div class="lg:col-span-4 space-y-6">
                     <div class="glass rounded-2xl border border-white/5 overflow-hidden">
+                        <!-- Admin Bonus Control (Add this right after the budgetList div) -->
+<div id="adminBonusPanel" class="hidden p-4 bg-black/40 border-t border-white/5 space-y-3">
+    <p class="text-[10px] uppercase text-gray-500 font-bold tracking-widest">Admin Purse Control</p>
+    <div class="flex flex-col gap-2">
+        <select id="bonusTeamSelect" class="bg-gray-900 border border-gray-700 p-2 rounded text-xs outline-none focus:border-neon">
+            <!-- Options populated via JS -->
+        </select>
+        <div class="flex gap-2">
+            <input id="bonusAmount" type="number" placeholder="Amt (L)" class="w-full bg-gray-900 border border-gray-700 p-2 rounded text-xs outline-none focus:border-neon">
+            <button onclick="sendBonus()" class="bg-neon text-black font-bold px-4 py-2 rounded text-[10px] hover:brightness-110">ADD</button>
+        </div>
+    </div>
+</div>
                         <div class="bg-emerald-900/30 p-4 border-b border-white/5 flex justify-between items-center">
                             <h3 class="font-bold">Mystic Purses</h3>
                             <i class="fa-solid fa-wallet text-yellow-500"></i>
@@ -434,6 +447,44 @@ function confirmDelete(id) {
                 }
 
         if(user) startApp();
+        function startApp() {
+    if(!user) return;
+    document.getElementById('loginModal').classList.add('hidden');
+    document.getElementById('dashboard').classList.remove('hidden');
+    
+    // ... existing code ...
+
+    if (user.role === 'admin') {
+        document.getElementById('adminControls').classList.remove('hidden');
+        document.getElementById('adminPlayerForm').classList.remove('hidden');
+        document.getElementById('adminBonusPanel').classList.remove('hidden'); // ADD THIS LINE
+    }
+        }
+        // 1. Function to send the bonus to the server
+function sendBonus() {
+    const teamName = document.getElementById('bonusTeamSelect').value;
+    const amount = document.getElementById('bonusAmount').value;
+
+    if (!teamName || !amount) {
+        alert("Select team and amount!");
+        return;
+    }
+
+    socket.emit('addBonus', { teamName, amount: Number(amount) });
+    document.getElementById('bonusAmount').value = ''; // Clear input
+}
+
+// 2. Update the dropdown whenever team data changes
+socket.on('updateTeams', (teams) => {
+    currentTeams = teams;
+    renderTeams(teams);
+    
+    // Update the bonus dropdown list
+    const select = document.getElementById('bonusTeamSelect');
+    if (select) {
+        select.innerHTML = teams.map(t => `<option value="${t.name}">${t.name}</option>`).join('');
+    }
+});
     </script>
 </body>
 </html>
