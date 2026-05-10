@@ -39,7 +39,6 @@
         </div>
     </div>
 
-    <!-- MAIN DASHBOARD -->
     <div id="dashboard" class="hidden pb-10">
         <nav class="glass sticky top-0 z-40 px-6 py-4 flex justify-between items-center border-b border-white/5">
             <div class="flex items-center gap-2">
@@ -62,18 +61,16 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- Left: Live Bidding & Admin Controls -->
+                <!-- Left Column -->
                 <div class="lg:col-span-8 space-y-6">
                     <div class="glass neon-border rounded-2xl p-6 relative overflow-hidden min-h-[350px] flex flex-col items-center justify-center">
                         <div class="absolute top-4 left-4 flex items-center gap-2">
                             <span class="h-3 w-3 bg-red-500 rounded-full pulse"></span>
                             <span class="text-xs font-bold uppercase tracking-widest">Live Session | Made By: Anubhav Sarkar</span>
                         </div>
-
                         <div id="auctionDisplay" class="text-center w-full">
                             <p class="text-gray-500 animate-pulse">Waiting for auction to begin...</p>
                         </div>
-
                         <div id="adminControls" class="hidden mt-8 pt-6 border-t border-white/5 w-full flex flex-wrap justify-center gap-4">
                             <button onclick="socket.emit('sellPlayer')" class="bg-blue-600 hover:bg-blue-500 text-white px-8 py-2 rounded-full font-bold">SELL PLAYER</button>
                             <button onclick="socket.emit('cancelAuction')" class="bg-gray-700 hover:bg-gray-600 text-white px-8 py-2 rounded-full font-bold">CANCEL</button>
@@ -84,11 +81,11 @@
                         <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-user-plus text-neon"></i> Add FC Mobile Player</h3>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                             <input id="pName" type="text" placeholder="Player Name" class="bg-gray-800 border border-gray-700 p-2 rounded outline-none focus:border-neon">
-                            <input id="pStrength" type="number" placeholder="OVR Rating" class="bg-gray-800 border border-gray-700 p-2 rounded outline-none focus:border-neon">
+                            <input id="pStrength" type="number" placeholder="OVR" class="bg-gray-800 border border-gray-700 p-2 rounded outline-none focus:border-neon">
                             <select id="pType" class="bg-gray-800 border border-gray-700 p-2 rounded outline-none">
                                 <option>Prime Icon</option><option>Event Icon</option><option>TOTY</option><option>TOTS</option><option>Standard</option>
                             </select>
-                            <input id="pBase" type="number" placeholder="Base Price (L)" class="bg-gray-800 border border-gray-700 p-2 rounded outline-none focus:border-neon">
+                            <input id="pBase" type="number" placeholder="Base Price" class="bg-gray-800 border border-gray-700 p-2 rounded outline-none focus:border-neon">
                         </div>
                         <button onclick="addPlayer()" class="mt-4 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded transition">ADD TO ROSTER</button>
                     </div>
@@ -100,14 +97,7 @@
                         <div class="overflow-x-auto">
                             <table class="w-full text-left">
                                 <thead class="bg-black/40 text-[11px] uppercase tracking-wider text-gray-400">
-                                    <tr>
-                                        <th class="p-4">Name</th>
-                                        <th class="p-4">OVR</th>
-                                        <th class="p-4">Card Type</th>
-                                        <th class="p-4">Status</th>
-                                        <th class="p-4">Base</th>
-                                        <th class="p-4 text-center">Action</th>
-                                    </tr>
+                                    <tr><th class="p-4">Name</th><th class="p-4">OVR</th><th class="p-4">Type</th><th class="p-4">Status</th><th class="p-4">Base</th><th class="p-4 text-center">Action</th></tr>
                                 </thead>
                                 <tbody id="playerList" class="text-sm divide-y divide-white/5"></tbody>
                             </table>
@@ -115,28 +105,28 @@
                     </div>
                 </div>
 
-                <!-- Right Side -->
+                <!-- Right Column -->
                 <div class="lg:col-span-4 space-y-6">
                     <div class="glass rounded-2xl border border-white/5 overflow-hidden">
-                        <!-- Admin Bonus Control (Add this right after the budgetList div) -->
-<div id="adminBonusPanel" class="hidden p-4 bg-black/40 border-t border-white/5 space-y-3">
-    <p class="text-[10px] uppercase text-gray-500 font-bold tracking-widest">Admin Purse Control</p>
-    <div class="flex flex-col gap-2">
-        <select id="bonusTeamSelect" class="bg-gray-900 border border-gray-700 p-2 rounded text-xs outline-none focus:border-neon">
-            <!-- Options populated via JS -->
-        </select>
-        <div class="flex gap-2">
-            <input id="bonusAmount" type="number" placeholder="Amt (L)" class="w-full bg-gray-900 border border-gray-700 p-2 rounded text-xs outline-none focus:border-neon">
-            <button onclick="sendBonus()" class="bg-neon text-black font-bold px-4 py-2 rounded text-[10px] hover:brightness-110">ADD</button>
-        </div>
-    </div>
-</div>
                         <div class="bg-emerald-900/30 p-4 border-b border-white/5 flex justify-between items-center">
                             <h3 class="font-bold">Mystic Purses</h3>
                             <i class="fa-solid fa-wallet text-yellow-500"></i>
                         </div>
                         <div id="budgetList" class="p-2 space-y-1"></div>
+                        
+                        <!-- Bonus Panel -->
+                        <div id="adminBonusPanel" class="hidden p-4 bg-black/40 border-t border-white/5 space-y-3">
+                            <p class="text-[10px] uppercase text-gray-500 font-bold tracking-widest">Admin Purse Control</p>
+                            <div class="flex flex-col gap-2">
+                                <select id="bonusTeamSelect" class="bg-gray-900 border border-gray-700 p-2 rounded text-xs outline-none focus:border-neon"></select>
+                                <div class="flex gap-2">
+                                    <input id="bonusAmount" type="number" placeholder="Amt (L)" class="w-full bg-gray-900 border border-gray-700 p-2 rounded text-xs outline-none">
+                                    <button onclick="sendBonus()" class="bg-neon text-black font-bold px-4 py-2 rounded text-[10px]">ADD</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                     <button onclick="generatePDF()" class="w-full bg-red-700 hover:bg-red-800 text-white px-4 py-3 rounded-xl text-sm font-bold shadow-lg transition flex items-center justify-center gap-2">
                         <i class="fa-solid fa-file-pdf"></i> Export ML Report
                     </button>
@@ -148,8 +138,8 @@
                         <div id="chatBox" class="flex-1 overflow-y-auto p-4 space-y-3 text-sm flex flex-col"></div>
                         <div class="p-3 border-t border-white/5 bg-black/20">
                             <div class="flex gap-2">
-                                <input id="chatInput" type="text" placeholder="Type a message..." class="flex-1 bg-gray-900 border border-gray-700 p-2.5 rounded-xl outline-none text-sm focus:border-neon transition" onkeypress="handleChatKey(event)">
-                                <button onclick="sendChat()" class="bg-neon text-black w-10 h-10 rounded-xl flex items-center justify-center hover:scale-105 transition"><i class="fa-solid fa-paper-plane"></i></button>
+                                <input id="chatInput" type="text" placeholder="Type..." class="flex-1 bg-gray-900 border border-gray-700 p-2.5 rounded-xl outline-none text-sm" onkeypress="handleChatKey(event)">
+                                <button onclick="sendChat()" class="bg-neon text-black w-10 h-10 rounded-xl flex items-center justify-center hover:scale-105"><i class="fa-solid fa-paper-plane"></i></button>
                             </div>
                         </div>
                     </div>
@@ -186,9 +176,7 @@
                 user = profile;
                 localStorage.setItem('ml_user', JSON.stringify(user));
                 startApp();
-            } else {
-                document.getElementById('loginError').classList.remove('hidden');
-            }
+            } else { document.getElementById('loginError').classList.remove('hidden'); }
         }
 
         function guestAccess() { user = { name: "Guest", role: "guest" }; startApp(); }
@@ -203,6 +191,7 @@
             if (user.role === 'admin') {
                 document.getElementById('adminControls').classList.remove('hidden');
                 document.getElementById('adminPlayerForm').classList.remove('hidden');
+                document.getElementById('adminBonusPanel').classList.remove('hidden');
             }
         }
 
@@ -212,10 +201,7 @@
             renderPlayers(data.players);
             renderTeams(data.teams);
             renderAuction(data.state);
-            if(data.chats) {
-                document.getElementById('chatBox').innerHTML = '';
-                data.chats.forEach(addChatMessage);
-            }
+            if(data.chats) { document.getElementById('chatBox').innerHTML = ''; data.chats.forEach(addChatMessage); }
         });
 
         socket.on('updatePlayers', (p) => { currentPlayers = p; renderPlayers(p); });
@@ -223,82 +209,49 @@
         socket.on('updateAuction', renderAuction);
         socket.on('newMessage', addChatMessage);
 
-
         function renderPlayers(players) {
-    const list = document.getElementById('playerList');
-    list.innerHTML = players.map(p => `
-        <tr class="hover:bg-white/5 transition border-b border-white/5">
-            <td class="p-4 font-bold text-white">${p.name}</td>
-            <td class="p-4 text-gray-400">${p.strength || p.rating}</td>
-            <td class="p-4"><span class="px-2 py-0.5 rounded-full text-[10px] border border-gray-600 bg-gray-800 text-gray-300">${p.cardType}</span></td>
-            <td class="p-4"><span class="font-bold ${p.status === 'Available' ? 'text-neon' : 'text-red-500'}">${p.status}</span></td>
-            <td class="p-4 text-white">${p.baseValue} L</td>
-            
-            <!-- ACTION COLUMN START -->
-            <td class="p-4 text-center">
-                <div class="flex items-center justify-center gap-3">
-                    
-                    <!-- START AUCTION BUTTON (Admin Only) -->
-                    ${user && user.role === 'admin' && p.status === 'Available' ? 
-                        `<button onclick="socket.emit('startAuction', { playerId: '${p._id}', baseValue: ${p.baseValue} })" 
-                                 class="bg-neon text-black text-[10px] px-3 py-1 rounded font-bold uppercase hover:brightness-110">
-                            Start
-                        </button>` : `<span class="text-gray-600 text-xs">${p.soldTo || '-'}</span>`
-                    }
-
-                    <!-- DELETE BUTTON (Admin Only) -->
-                    ${user && user.role === 'admin' ? `
-                        <button onclick="confirmDelete('${p._id}', '${p.name.replace(/'/g, "\\'")}')" 
-                                class="text-gray-500 hover:text-red-500 transition-colors p-1" title="Delete Player">
-                            <i class="fa-solid fa-trash-can text-sm"></i>
-                        </button>
-                    ` : ''}
-
-                </div>
-            </td>
-            <!-- ACTION COLUMN END -->
-
-        </tr>
-    `).join('');
+            document.getElementById('playerList').innerHTML = players.map(p => `
+                <tr class="hover:bg-white/5 border-b border-white/5">
+                    <td class="p-4 font-bold text-white">${p.name}</td>
+                    <td class="p-4 text-gray-400">${p.strength}</td>
+                    <td class="p-4"><span class="px-2 py-0.5 rounded-full text-[10px] border border-gray-600 bg-gray-800">${p.cardType}</span></td>
+                    <td class="p-4 font-bold ${p.status === 'Available' ? 'text-neon' : 'text-red-500'}">${p.status}</td>
+                    <td class="p-4 text-white">${p.baseValue} L</td>
+                    <td class="p-4 text-center flex items-center justify-center gap-3">
+                        ${user && user.role === 'admin' && p.status === 'Available' ? `<button onclick="socket.emit('startAuction', { playerId: '${p._id}', baseValue: ${p.baseValue} })" class="bg-neon text-black text-[10px] px-3 py-1 rounded font-bold">START</button>` : `<span class="text-gray-600 text-xs">${p.soldTo || '-'}</span>`}
+                        ${user && user.role === 'admin' ? `<button onclick="confirmDelete('${p._id}', '${p.name}')" class="text-gray-500 hover:text-red-500"><i class="fa-solid fa-trash-can"></i></button>` : ''}
+                    </td>
+                </tr>
+            `).join('');
         }
 
-        
-
         function renderTeams(teams) {
-            document.getElementById('budgetList').innerHTML = teams.map(t => `
-                <div class="flex justify-between items-center p-3 rounded-lg hover:bg-white/5 border border-transparent transition">
+            document.getElementById('budgetList').innerHTML = teams.sort((a,b)=>b.budget-a.budget).map(t => `
+                <div class="flex justify-between items-center p-3 rounded-lg hover:bg-white/5 transition">
                     <span class="text-sm font-semibold">${t.name}</span>
                     <span class="text-neon font-black">${t.budget} L</span>
                 </div>
             `).join('');
+            const select = document.getElementById('bonusTeamSelect');
+            if (select) select.innerHTML = teams.map(t => `<option value="${t.name}">${t.name}</option>`).join('');
         }
 
         function renderAuction(state) {
             const container = document.getElementById('auctionDisplay');
-            if (!container) return;
-            if (!state || !state.activePlayerId) {
-                container.innerHTML = `<div class="text-center"><i class="fa-solid fa-gavel text-5xl text-gray-700 mb-4"></i><p class="text-gray-500 italic">No active session</p></div>`;
+            if (!container || !state || !state.activePlayerId) {
+                container.innerHTML = `<i class="fa-solid fa-gavel text-5xl text-gray-700 mb-4"></i><p class="text-gray-500">No active session</p>`;
                 return;
             }
-
             const p = state.activePlayerId;
-            const timerColor = state.timeLeft <= 10 ? 'text-red-500 animate-pulse' : 'text-neon';
             const isHighest = user && (user.name === state.highestBidder);
-
             container.innerHTML = `
                 <div class="w-full text-center">
-                    <div class="absolute top-4 right-8 text-right">
-                        <p class="text-[10px] uppercase text-gray-500 tracking-widest font-bold">Time Left</p>
-                        <p class="text-4xl font-black ${timerColor}">${state.timeLeft}s</p>
-                    </div>
-                    <h2 class="text-5xl font-black text-white mb-1 uppercase">${p.name}</h2>
+                    <div class="absolute top-4 right-8 text-right"><p class="text-[10px] uppercase text-gray-500">Time Left</p><p class="text-4xl font-black ${state.timeLeft <= 10 ? 'text-red-500 animate-pulse' : 'text-neon'}">${state.timeLeft}s</p></div>
+                    <h2 class="text-5xl font-black text-white uppercase">${p.name}</h2>
                     <p class="text-neon text-sm font-bold tracking-widest mb-8">${p.cardType} | OVR ${p.strength}</p>
                     <div class="flex flex-col md:flex-row items-center justify-center gap-6 mb-8">
-                        <div class="bg-black/60 px-12 py-8 rounded-3xl border border-emerald-500/30">
-                            <p class="text-[11px] uppercase text-gray-500 mb-1">Current Bid</p>
-                            <p class="text-6xl font-black text-yellow-400">${state.currentBid}L</p>
-                        </div>
-                        <div class="text-left"><p class="text-xs uppercase text-gray-500">Leading Team</p><p class="text-2xl font-bold">${state.highestBidder}</p></div>
+                        <div class="bg-black/60 px-12 py-8 rounded-3xl border border-emerald-500/30"><p class="text-[11px] text-gray-500">Current Bid</p><p class="text-6xl font-black text-yellow-400">${state.currentBid}L</p></div>
+                        <div class="text-left"><p class="text-xs text-gray-500">Leading</p><p class="text-2xl font-bold">${state.highestBidder}</p></div>
                     </div>
                     ${user && user.role === 'captain' ? `
                         <div class="grid grid-cols-3 gap-3 w-full max-w-lg mx-auto">
@@ -307,184 +260,43 @@
                             <button onclick="bid(10)" class="bg-neon text-black p-4 rounded-xl font-bold ${isHighest ? 'opacity-50' : ''}" ${isHighest ? 'disabled' : ''}>+10 L</button>
                         </div>
                     ` : ''}
-                </div>
-            `;
+                </div>`;
         }
 
         function bid(inc) { socket.emit('placeBid', { teamName: user.name, increment: inc }); }
+        function sendBonus() { socket.emit('addBonus', { teamName: document.getElementById('bonusTeamSelect').value, amount: Number(document.getElementById('bonusAmount').value) }); document.getElementById('bonusAmount').value = ''; }
+        function confirmDelete(id, name) { if(confirm(`Delete ${name}?`)) socket.emit('deletePlayer', id); }
         function addPlayer() {
-    const name = document.getElementById('pName').value.trim();
-    const strength = document.getElementById('pStrength').value;
-    const type = document.getElementById('pType').value;
-    const baseValue = document.getElementById('pBase').value;
-
-    if (!name || !strength || !baseValue) {
-        alert("Please fill all fields!");
-        return;
-    }
-
-    const data = {
-        name: name,
-        strength: Number(strength),   // Ensure this is a number
-        cardType: type,
-        baseValue: Number(baseValue), // Ensure this is a number
-        status: 'Available',
-        soldTo: '-'
-    };
-
-    console.log("Attempting to add player:", data);
-    socket.emit('addPlayer', data);
-
-    // Clear inputs after sending
-    document.getElementById('pName').value = '';
-    document.getElementById('pStrength').value = '';
-    document.getElementById('pBase').value = '';
-    alert("Player addition request sent!");
+            socket.emit('addPlayer', { name: document.getElementById('pName').value, strength: Number(document.getElementById('pStrength').value), cardType: document.getElementById('pType').value, baseValue: Number(document.getElementById('pBase').value) });
+            document.getElementById('pName').value = ''; document.getElementById('pStrength').value = ''; document.getElementById('pBase').value = '';
         }
-
-        function sendChat() {
-            const msg = document.getElementById('chatInput').value;
-            if(msg && user) {
-                socket.emit('sendMessage', { sender: user.name, role: user.role, text: msg });
-                document.getElementById('chatInput').value = '';
-            }
-        }
+        function sendChat() { if(document.getElementById('chatInput').value && user) { socket.emit('sendMessage', { sender: user.name, role: user.role, text: document.getElementById('chatInput').value }); document.getElementById('chatInput').value = ''; } }
         function handleChatKey(e) { if(e.key === 'Enter') sendChat(); }
-
         function addChatMessage(data) {
             const box = document.getElementById('chatBox');
             const div = document.createElement('div');
             const isMe = user && data.sender === user.name;
-            div.className = `max-w-[85%] p-3 rounded-2xl mb-1 ${isMe ? 'self-end bg-emerald-600/20 border border-emerald-500/30' : 'self-start bg-gray-800/50 border border-white/5'}`;
+            div.className = `max-w-[85%] p-3 rounded-2xl mb-1 ${isMe ? 'self-end bg-emerald-600/20 border-emerald-500/30' : 'self-start bg-gray-800/50 border-white/5'}`;
             div.innerHTML = `<span class="text-[10px] font-black uppercase text-neon">${data.sender}</span><p class="text-gray-200">${data.text}</p>`;
-            box.appendChild(div);
-            box.scrollTop = box.scrollHeight;
+            box.appendChild(div); box.scrollTop = box.scrollHeight;
         }
-        // Add this with your other functions like addPlayer()
-function confirmDelete(id) {
-    if (confirm("⚠️ Are you sure you want to PERMANENTLY delete this player?")) {
-        socket.emit('deletePlayer', id);
-    }
-}
-
         function generatePDF() {
-    try {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-
-        // 1. Check if we have data
-        const soldPlayers = currentPlayers.filter(p => p.status === 'Sold');
-
-        if (soldPlayers.length === 0) {
-            alert("No players have been sold yet! The report will be empty.");
-            return;
+            const { jsPDF } = window.jspdf; const doc = new jsPDF();
+            doc.setFontSize(22); doc.setTextColor(16, 185, 129); doc.text("MYSTIC LEGENDS REPORT", 14, 20);
+            const soldData = currentPlayers.filter(p => p.status === 'Sold').map(p => {
+                const price = p.soldTo.includes('(') ? p.soldTo.split('(')[1].replace(')', '') : 'N/A';
+                const team = p.soldTo.split(' (')[0];
+                return [p.name, p.strength, p.cardType, price, team];
+            });
+            doc.autoTable({ startY: 30, head: [['Player', 'OVR', 'Type', 'Price', 'Team']], body: soldData.length > 0 ? soldData : [['None', '-', '-', '-', '-']], headStyles: { fillColor: [16, 185, 129] } });
+            const budgetData = currentTeams.map(t => [t.name, t.budget + " L"]);
+            doc.text("Team Summary", 14, doc.lastAutoTable.finalY + 15);
+            doc.autoTable({ startY: doc.lastAutoTable.finalY + 20, head: [['Team Name', 'Balance']], body: budgetData, headStyles: { fillColor: [31, 41, 55] } });
+            doc.save('Mystic_Legends_Auction.pdf');
         }
-
-        // 2. Header - Mystic Legends Branding
-        doc.setFontSize(22);
-        doc.setTextColor(16, 185, 129); // Mystic Neon Green
-        doc.text("MYSTIC LEGENDS", 14, 20);
-        
-        doc.setFontSize(14);
-        doc.setTextColor(100);
-        doc.text("FC Mobile Official Auction Report", 14, 30);
-        
-        doc.setFontSize(10);
-        doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 38);
-        doc.line(14, 42, 196, 42); 
-
-        // 3. Prepare Table Data safely
-        const tableBody = soldPlayers.map(p => {
-            // Extract Price: Look for numbers in the soldTo string, fallback to 0
-            const priceMatch = p.soldTo ? p.soldTo.match(/\d+/) : null;
-            const price = priceMatch ? priceMatch[0] + " L" : "N/A";
-
-            // Extract Team Name: Get text before the bracket
-            const teamName = p.soldTo ? p.soldTo.split(' (')[0] : "Unknown";
-
-            return [
-                p.name,
-                p.strength || p.rating || "N/A",
-                p.cardType || "Standard",
-                price,
-                teamName
-            ];
-        });
-
-        // 4. Generate Table
-        doc.autoTable({
-            startY: 48,
-            head: [['Player Name', 'OVR', 'Type', 'Price', 'Purchased By']],
-            body: tableBody,
-            headStyles: { fillColor: [16, 185, 129], textColor: [0, 0, 0] },
-            alternateRowStyles: { fillColor: [240, 240, 240] },
-            styles: { font: 'helvetica', fontSize: 10 },
-            margin: { top: 40 }
-        });
-
-        // 5. Team Summary (Optional but helpful)
-        const finalY = doc.lastAutoTable.finalY + 15;
-        doc.setFontSize(12);
-        doc.setTextColor(0);
-        doc.text("Final Team Purse Summary:", 14, finalY);
-
-        const teamSummary = currentTeams.map(t => [t.name, t.budget + " L"]);
-        doc.autoTable({
-            startY: finalY + 5,
-            head: [['Team Name', 'Remaining Budget']],
-            body: teamSummary,
-            headStyles: { fillColor: [31, 41, 55] }
-        });
-
-        // 6. Save
-        doc.save('Mystic_Legends_Auction_Report.pdf');
-        console.log("PDF Exported successfully");
-
-    } catch (error) {
-        console.error("PDF Error:", error);
-        alert("Failed to generate PDF. Make sure you have players in the 'Sold' status.");
-    }
-                }
 
         if(user) startApp();
-        function startApp() {
-    if(!user) return;
-    document.getElementById('loginModal').classList.add('hidden');
-    document.getElementById('dashboard').classList.remove('hidden');
-    
-    // ... existing code ...
-
-    if (user.role === 'admin') {
-        document.getElementById('adminControls').classList.remove('hidden');
-        document.getElementById('adminPlayerForm').classList.remove('hidden');
-        document.getElementById('adminBonusPanel').classList.remove('hidden'); // ADD THIS LINE
-    }
-        }
-        // 1. Function to send the bonus to the server
-function sendBonus() {
-    const teamName = document.getElementById('bonusTeamSelect').value;
-    const amount = document.getElementById('bonusAmount').value;
-
-    if (!teamName || !amount) {
-        alert("Select team and amount!");
-        return;
-    }
-
-    socket.emit('addBonus', { teamName, amount: Number(amount) });
-    document.getElementById('bonusAmount').value = ''; // Clear input
-}
-
-// 2. Update the dropdown whenever team data changes
-socket.on('updateTeams', (teams) => {
-    currentTeams = teams;
-    renderTeams(teams);
-    
-    // Update the bonus dropdown list
-    const select = document.getElementById('bonusTeamSelect');
-    if (select) {
-        select.innerHTML = teams.map(t => `<option value="${t.name}">${t.name}</option>`).join('');
-    }
-});
     </script>
 </body>
 </html>
+  
